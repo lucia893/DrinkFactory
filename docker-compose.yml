@@ -1,8 +1,23 @@
-version: "3.8"
+version: "3.9"
+
 services:
-redis:
-image: redis:7-alpine
-ports:
-  - "6379:6379"
+  app:
+    build: .
+    container_name: energy-drinks-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-energy
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
-  - redis_data:/data
+  redis_data:
